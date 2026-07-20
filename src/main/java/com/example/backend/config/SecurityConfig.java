@@ -29,9 +29,7 @@ public class SecurityConfig {
     @Bean
     public AuthenticationManager authenticationManager(
             AuthenticationConfiguration config) throws Exception {
-
         return config.getAuthenticationManager();
-
     }
 
     @Bean
@@ -39,27 +37,20 @@ public class SecurityConfig {
             throws Exception {
 
         http
-
                 .cors(Customizer.withDefaults())
-
                 .csrf(csrf -> csrf.disable())
-
                 .sessionManagement(session ->
-                        session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-
+                        session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                )
                 .authorizeHttpRequests(auth -> auth
-
                         .requestMatchers(
                                 "/",
                                 "/api/auth/**",
                                 "/api/ai/**"
                         ).permitAll()
-
                         .anyRequest().authenticated()
                 )
-
                 .httpBasic(Customizer.withDefaults())
-
                 .addFilterBefore(
                         jwtAuthenticationFilter,
                         UsernamePasswordAuthenticationFilter.class
@@ -74,11 +65,21 @@ public class SecurityConfig {
         CorsConfiguration configuration = new CorsConfiguration();
 
         configuration.setAllowedOrigins(
-                List.of("http://localhost:5173")
+                List.of(
+                        "http://localhost:5173",
+                        "https://frontend-wise.vercel.app"
+                )
         );
 
         configuration.setAllowedMethods(
-                List.of("GET", "POST", "PUT", "DELETE", "OPTIONS")
+                List.of(
+                        "GET",
+                        "POST",
+                        "PUT",
+                        "DELETE",
+                        "OPTIONS",
+                        "HEAD"
+                )
         );
 
         configuration.setAllowedHeaders(
@@ -94,5 +95,4 @@ public class SecurityConfig {
 
         return source;
     }
-
 }
