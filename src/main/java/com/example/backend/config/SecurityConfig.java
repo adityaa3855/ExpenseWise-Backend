@@ -43,18 +43,7 @@ public class SecurityConfig {
                         session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 )
                 .authorizeHttpRequests(auth -> auth
-                        // Allow all CORS preflight requests
-                        .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
-
-                        // Public APIs
-                        .requestMatchers(
-                                "/",
-                                "/api/auth/**",
-                                "/api/ai/**"
-                        ).permitAll()
-
-                        // Protected APIs
-                        .anyRequest().authenticated()
+                        .anyRequest().permitAll()
                 )
                 .httpBasic(httpBasic -> httpBasic.disable())
                 .addFilterBefore(
@@ -105,3 +94,4 @@ public class SecurityConfig {
         return source;
     }
 }
+
